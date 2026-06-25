@@ -1,151 +1,127 @@
 # Quiz CLI
 
-## Project Overview
-
-Quiz CLI is an interactive command-line quiz game built with Node.js. It lets users choose a category, answer multiple-choice questions, and review their results at the end of each run.
-
-The project is designed as a lightweight educational tool for practicing JavaScript, Node.js fundamentals, and general programming concepts directly in the terminal.
+An interactive command-line quiz game for learning JavaScript.
 
 ## Features
 
 - Interactive terminal-based quiz experience
-- Multiple quiz categories:
+- Category selection from:
   - JavaScript Basics
   - Node.js Fundamentals
   - General Programming
-- Configurable question count per round
-- Randomized question order
-- Immediate feedback for correct and incorrect answers
-- Progress indicator during the quiz
-- Final score summary with performance message
-- Review section for missed questions
-- Colorized terminal output using ANSI escape codes
+- Option to choose how many questions to answer
+- Randomized question order using Fisher-Yates shuffle
+- Score tracking and progress display
+- End-of-quiz result summary
+- Review of missed questions with explanations
+- Replay flow to start another round
 
-## Tech Stack
+## Prerequisites
 
-- **Language:** JavaScript (ES Modules)
-- **Runtime:** Node.js 18+
-- **Built-in modules used:**
-  - `node:fs/promises`
-  - `node:path`
-  - `node:url`
-  - `node:readline`
-- **Package manager:** npm
-- **No external dependencies**
+- **Node.js 18 or newer**
+- A terminal that supports ANSI colors
 
-## Installation / Setup
+## Installation
 
-### Prerequisites
+Clone the repository and install dependencies:
 
-- Node.js **18.0.0 or newer**
-- npm
+```bash
+git clone https://github.com/Ellizard/readme-creator.git
+cd readme-creator
+npm install
+```
 
-### Steps
+## Usage
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd quiz-cli
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-   > The project does not currently rely on external packages, but running `npm install` will prepare the local environment and generate a lockfile if needed.
-
-3. Start the quiz:
-   ```bash
-   npm start
-   ```
-
-## Configuration
-
-The quiz data is stored in:
-
-- `data/questions.json`
-
-This file defines the quiz categories, questions, answer options, correct answer indexes, and explanations.
-
-### Supported content structure
-
-Each category contains:
-- `name`: category display name
-- `questions`: array of questions
-
-Each question contains:
-- `question`: the question text
-- `options`: multiple-choice options
-- `answer`: the zero-based index of the correct option
-- `explanation`: optional explanation shown after answering
-
-No environment variables are required.
-
-## Usage Examples
-
-### Start the application
+Start the quiz with:
 
 ```bash
 npm start
 ```
 
-### Run the quiz
+Or run the entry point directly:
 
-1. Choose a category from the menu.
-2. Choose how many questions to answer.
-3. Enter the number of the answer choice for each question.
-4. Review your final score and any incorrect answers.
-5. Choose whether to play again.
+```bash
+node index.js
+```
 
-### Run tests
+### Example flow
+
+1. Launch the app
+2. Choose a quiz category
+3. Select the number of questions
+4. Answer each question in the terminal
+5. Review your score and missed questions
+6. Choose whether to play again
+
+## Project Structure
+
+```text
+.
+├── index.js              # CLI entry point
+├── package.json          # Project metadata and scripts
+├── data/
+│   └── questions.json    # Quiz content and categories
+└── src/
+    ├── colors.js         # ANSI color utilities
+    ├── input.js          # readline prompt/select/confirm helpers
+    └── quiz.js           # Quiz logic, scoring, progress, review
+```
+
+## Data Format / Quiz Content Structure
+
+Quiz content is stored in `data/questions.json` and organized by category.
+
+Each question includes:
+
+- `question` — the question text
+- `options` — an array of possible answers
+- `answer` — the index of the correct option
+- `explanation` — explanation shown after the quiz
+
+### Example structure
+
+```json
+{
+  "JavaScript Basics": [
+    {
+      "question": "What does `typeof []` return?",
+      "options": ["array", "object", "undefined", "function"],
+      "answer": 1,
+      "explanation": "In JavaScript, arrays are objects."
+    }
+  ]
+}
+```
+
+Categories currently included:
+
+- JavaScript Basics
+- Node.js Fundamentals
+- General Programming
+
+## Scripts
+
+From `package.json`:
+
+- `npm start` — runs `node index.js`
+- `npm test` — runs the Node.js test runner with `node --test`
+
+## Contributing
+
+Contributions are welcome. If you'd like to help improve the quiz, consider:
+
+- adding more questions
+- improving category coverage
+- refining terminal UX
+- extending tests
+
+Before opening a pull request, make sure the project still runs correctly and tests pass:
 
 ```bash
 npm test
 ```
 
-> Note: the repository currently includes a `test` script (`node --test`), but no dedicated test files are present in the repository snapshot.
-
-## File Structure
-
-```text
-.
-├── data/
-│   └── questions.json      # Quiz content and question bank
-├── index.js                # Application entry point
-├── package.json            # Project metadata and scripts
-└── src/
-    ├── colors.js           # ANSI color helpers for terminal output
-    ├── input.js            # Readline-based user input helpers
-    └── quiz.js             # Quiz game logic and scoring
-```
-
-## How It Works
-
-- `index.js` loads the quiz data from `data/questions.json`
-- `src/input.js` handles prompting and menu selection in the terminal
-- `src/quiz.js` manages shuffling, scoring, progress tracking, and results output
-- `src/colors.js` formats terminal output with ANSI colors
-
-## Development Notes
-
-- The application uses ES Modules (`"type": "module"` in `package.json`)
-- The quiz questions are shuffled each time a round starts
-- Answers are stored during the session so the final review can show missed answers
-- The app exits with a non-zero status code if an error occurs during startup or gameplay
-
-## Contributing
-
-Contributions are welcome. Good starting points include:
-
-- Adding new quiz categories
-- Expanding the question bank
-- Improving the UI/terminal layout
-- Adding automated tests
-- Enhancing score tracking or difficulty levels
-
-If you contribute, please keep the data format in `data/questions.json` consistent with the existing schema.
-
 ## License
 
-This project is licensed under the MIT License, as declared in `package.json`.
+MIT
