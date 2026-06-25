@@ -1,29 +1,39 @@
 # Quiz CLI
 
-An interactive command-line quiz game for learning JavaScript.
+Quiz CLI is an interactive Node.js terminal quiz for learning JavaScript, Node.js, and general programming concepts.
 
 ## Project Description
 
-Quiz CLI is a Node.js ES module application that loads multiple-choice questions from `data/questions.json`, prompts the user to choose a category and question count, and runs a terminal-based quiz with scoring, progress display, result review, and replay support.
+The app loads multiple-choice questions from `data/questions.json`, lets you choose a category and question count, and guides you through a short quiz with scoring, progress tracking, explanations, and answer review.
 
-The application is organized into small modules for:
+It is built with ES modules, uses no external dependencies, and targets Node.js 18+.
 
-- terminal color helpers
-- reusable input handling
-- quiz state and scoring logic
-- the main CLI flow
+## Features
 
-## Setup Instructions
+- Category selection
+- Question count selection
+- Multiple-choice questions
+- Randomized question order
+- Score and progress tracking
+- Explanations after each question
+- Review of incorrect answers
+- Replay support
+- Terminal color helpers for clearer output
 
-Install dependencies with:
+## Prerequisites
+
+- Node.js 18 or newer
+- A terminal that supports interactive input
+
+## Installation
+
+Clone the repository and install dependencies:
 
 ```bash
 npm install
 ```
 
-The project requires Node.js `>=18.0.0`.
-
-## How to Run the Project
+## Usage
 
 Start the quiz with:
 
@@ -31,42 +41,103 @@ Start the quiz with:
 npm start
 ```
 
-Or run the entry point directly:
+You can also run the entry point directly:
 
 ```bash
 node index.js
 ```
 
-To run the test script:
+The `npm test` script is available as well:
 
 ```bash
 npm test
 ```
 
-## Key Features
+## Interactive Flow
 
-- Category selection
-  - JavaScript Basics
-  - Node.js Fundamentals
-  - General Programming
-- Question count selection
-- Randomized question order using the Fisher-Yates algorithm
-- Score tracking
-- Progress display with a visual progress bar
-- Per-question correctness feedback
-- Explanation display after each question
-- End-of-quiz summary with performance message
-- Review of incorrect answers
-- Replay flow to start another round
-- ANSI-based terminal color styling
+A typical session looks like this:
+
+```text
+$ npm start
+
+📚 QUIZ CLI
+Test your programming knowledge!
+
+Choose a category:
+> JavaScript Basics
+> Node.js Fundamentals
+> General Programming
+
+How many questions?
+> All questions
+> 3 questions
+> 5 questions
+
+Starting quiz...
+Select your answer by entering the number.
+
+Question 1 of 3
+> 1) ...
+> 2) ...
+> 3) ...
+
+✓ Correct!
+💡 Explanation text...
+
+📊 QUIZ RESULTS
+Score: 2/3
+Would you like to play again? (y/n)
+```
+
+## How to Add or Edit Quiz Questions
+
+Quiz content lives in `data/questions.json`.
+
+### Categories
+
+Questions are grouped under a top-level `categories` object. Each category has a key, a display name, and a `questions` array.
+
+Supported category keys in the current data set:
+
+- `javascript`
+- `nodejs`
+- `general`
+
+### Question format
+
+Each question entry should include:
+
+- `question` — the question text
+- `options` — an array of answer choices
+- `answer` — the index of the correct option
+- `explanation` — a short explanation shown after the answer and in the review section
+
+### Example structure
+
+```json
+{
+  "categories": {
+    "example": {
+      "name": "Example Category",
+      "questions": [
+        {
+          "question": "Your question here?",
+          "options": ["A", "B", "C", "D"],
+          "answer": 1,
+          "explanation": "Why B is correct."
+        }
+      ]
+    }
+  }
+}
+```
 
 ## Project Structure
 
 ```text
 .
-├── README.md
-├── package.json
 ├── index.js
+├── package.json
 ├── data/
 │   └── questions.json
 └── src/
@@ -75,42 +146,36 @@ npm test
     └── quiz.js
 ```
 
-## Quiz Data Format
+### File Overview
 
-Quiz content is stored in `data/questions.json` under a top-level `categories` object.
-
-Available categories:
-
-- `javascript` → JavaScript Basics
-- `nodejs` → Node.js Fundamentals
-- `general` → General Programming
-
-Each question includes:
-
-- `question` — the question text
-- `options` — an array of possible answers
-- `answer` — the index of the correct option
-- `explanation` — the explanation shown after answering and in the review summary
+- `index.js` — application entry point and main quiz loop
+- `src/quiz.js` — quiz logic, scoring, shuffling, progress bar, and results review
+- `src/input.js` — `readline` helpers for terminal input
+- `src/colors.js` — terminal color helpers
+- `data/questions.json` — quiz questions and categories
 
 ## Scripts
 
 From `package.json`:
 
-- `npm start` — runs `node index.js`
-- `npm test` — runs the Node.js test runner with `node --test`
+- `npm start` — runs the quiz application
+- `npm test` — runs the Node.js test runner
 
-## Architecture Overview
+## Testing
 
-- `index.js` loads the quiz data, shows the banner, coordinates category and question-count selection, runs the quiz loop, and handles errors and cleanup.
-- `src/input.js` wraps Node.js `readline` with reusable prompt, selection, confirmation, and pause helpers.
-- `src/quiz.js` contains the `Quiz` class, shuffling logic, question rendering, scoring, progress tracking, and results output.
-- `src/colors.js` provides ANSI color helpers used throughout the CLI.
+`npm test` runs `node --test`. If no test files are present, the command may be minimal or act as a placeholder.
+
+## Troubleshooting
+
+- **Node version errors**: Make sure Node.js 18+ is installed.
+- **Terminal input issues**: Run the app in an interactive terminal, not a non-interactive shell or redirected session.
+- **Color display problems**: If your terminal does not support ANSI colors, the quiz may still run but formatting can appear differently.
 
 ## Contributing
 
-Contributions are welcome. If you'd like to improve the quiz, you can add more questions, expand category coverage, refine the terminal experience, or extend the test suite.
+Contributions are welcome. Useful improvements include adding questions, refining quiz flow, improving terminal UX, and expanding tests.
 
-Before opening a pull request, run the test script:
+Before submitting changes, run:
 
 ```bash
 npm test
