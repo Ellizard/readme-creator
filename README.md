@@ -2,36 +2,19 @@
 
 An interactive command-line quiz game for learning JavaScript.
 
-## Features
+## Project Description
 
-- Interactive terminal-based quiz experience
-- Category selection from:
-  - JavaScript Basics
-  - Node.js Fundamentals
-  - General Programming
-- Option to choose how many questions to answer
-- Randomized question order using Fisher-Yates shuffle
-- Score tracking and progress display
-- End-of-quiz result summary
-- Review of missed questions with explanations
-- Replay flow to start another round
+Quiz CLI is a Node.js ES module CLI application that loads quiz questions from JSON, lets you choose a category and question count, and runs a multiple-choice quiz in the terminal with scoring, progress tracking, and missed-question review.
 
-## Prerequisites
+## Setup Instructions
 
-- **Node.js 18 or newer**
-- A terminal that supports ANSI colors
-
-## Installation
-
-Clone the repository and install dependencies:
+Install dependencies with:
 
 ```bash
-git clone https://github.com/Ellizard/readme-creator.git
-cd readme-creator
 npm install
 ```
 
-## Usage
+## How to Run the Project
 
 Start the quiz with:
 
@@ -45,32 +28,50 @@ Or run the entry point directly:
 node index.js
 ```
 
-### Example flow
+## Key Features
 
-1. Launch the app
-2. Choose a quiz category
-3. Select the number of questions
-4. Answer each question in the terminal
-5. Review your score and missed questions
-6. Choose whether to play again
+- Category selection
+  - JavaScript Basics
+  - Node.js Fundamentals
+  - General Programming
+- Question count selection
+- Randomized question order using Fisher-Yates shuffle
+- Score tracking
+- Progress display
+- Explanation display after each question
+- Review of missed questions with explanations
+- Replay flow to start another round
+- Terminal styling with ANSI color helpers
+
+## Requirements
+
+- Node.js 18 or newer
+- A terminal that supports ANSI colors
 
 ## Project Structure
 
 ```text
 .
-├── index.js              # CLI entry point
-├── package.json          # Project metadata and scripts
+├── README.md
+├── package.json
+├── index.js
 ├── data/
-│   └── questions.json    # Quiz content and categories
+│   └── questions.json
 └── src/
-    ├── colors.js         # ANSI color utilities
-    ├── input.js          # readline prompt/select/confirm helpers
-    └── quiz.js           # Quiz logic, scoring, progress, review
+    ├── colors.js
+    ├── input.js
+    └── quiz.js
 ```
 
-## Data Format / Quiz Content Structure
+## Quiz Data Format
 
-Quiz content is stored in `data/questions.json` and organized by category.
+Quiz content is stored in `data/questions.json` under a top-level `categories` object.
+
+Available categories:
+
+- `javascript` → JavaScript Basics
+- `nodejs` → Node.js Fundamentals
+- `general` → General Programming
 
 Each question includes:
 
@@ -78,27 +79,6 @@ Each question includes:
 - `options` — an array of possible answers
 - `answer` — the index of the correct option
 - `explanation` — explanation shown after the quiz
-
-### Example structure
-
-```json
-{
-  "JavaScript Basics": [
-    {
-      "question": "What does `typeof []` return?",
-      "options": ["array", "object", "undefined", "function"],
-      "answer": 1,
-      "explanation": "In JavaScript, arrays are objects."
-    }
-  ]
-}
-```
-
-Categories currently included:
-
-- JavaScript Basics
-- Node.js Fundamentals
-- General Programming
 
 ## Scripts
 
@@ -109,12 +89,7 @@ From `package.json`:
 
 ## Contributing
 
-Contributions are welcome. If you'd like to help improve the quiz, consider:
-
-- adding more questions
-- improving category coverage
-- refining terminal UX
-- extending tests
+Contributions are welcome. If you'd like to help improve the quiz, consider adding more questions, improving category coverage, refining the terminal experience, or extending tests.
 
 Before opening a pull request, make sure the project still runs correctly and tests pass:
 
