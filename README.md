@@ -1,66 +1,74 @@
 # Quiz CLI
 
-An interactive command-line quiz game for learning JavaScript.
+**Quiz CLI** — это интерактивная викторина для терминала на Node.js. Приложение загружает вопросы из JSON-файла, позволяет выбрать категорию и количество вопросов, задаёт их в случайном порядке, считает очки и показывает итоговый результат с объяснениями.
 
-## Project Description
+## Описание проекта
 
-Quiz CLI is a Node.js ES module application that loads multiple-choice questions from `data/questions.json`, prompts the user to choose a category and question count, and runs a terminal-based quiz with scoring, progress display, result review, and replay support.
+Приложение предназначено для прохождения викторины в CLI-режиме.  
+Пользователь:
 
-The application is organized into small modules for:
+- выбирает категорию вопросов;
+- выбирает количество вопросов;
+- отвечает на вопросы в терминале;
+- видит прогресс прохождения;
+- получает итоговый отчёт и может сыграть снова.
 
-- terminal color helpers
-- reusable input handling
-- quiz state and scoring logic
-- the main CLI flow
+## Требования
 
-## Setup Instructions
+- Node.js **18.0.0** или выше
+- npm
 
-Install dependencies with:
+## Установка
 
 ```bash
+git clone <repository-url>
+cd readme-creator
 npm install
 ```
 
-The project requires Node.js `>=18.0.0`.
+> Если в проекте не используются внешние зависимости, шаг `npm install` может не вносить изменений, но остаётся стандартным этапом подготовки Node.js-проекта.
 
-## How to Run the Project
+## Как запустить проект
 
-Start the quiz with:
+### Запуск приложения
 
 ```bash
 npm start
 ```
 
-Or run the entry point directly:
+Команда `npm start` выполняет:
 
 ```bash
 node index.js
 ```
 
-To run the test script:
+### Запуск тестов
 
 ```bash
 npm test
 ```
 
-## Key Features
+Команда `npm test` выполняет:
 
-- Category selection
-  - JavaScript Basics
-  - Node.js Fundamentals
-  - General Programming
-- Question count selection
-- Randomized question order using the Fisher-Yates algorithm
-- Score tracking
-- Progress display with a visual progress bar
-- Per-question correctness feedback
-- Explanation display after each question
-- End-of-quiz summary with performance message
-- Review of incorrect answers
-- Replay flow to start another round
-- ANSI-based terminal color styling
+```bash
+node --test
+```
 
-## Project Structure
+## Ключевые возможности
+
+- интерактивный CLI-интерфейс;
+- загрузка вопросов из `data/questions.json`;
+- выбор категории викторины;
+- выбор количества вопросов;
+- случайный порядок вопросов;
+- подсчёт очков;
+- показ правильного ответа и объяснения;
+- отображение прогресса прохождения;
+- итоговый отчёт по результатам;
+- возможность пройти викторину повторно;
+- цветной вывод в терминал через ANSI-стили.
+
+## Структура проекта
 
 ```text
 .
@@ -75,47 +83,122 @@ npm test
     └── quiz.js
 ```
 
-## Quiz Data Format
+## Архитектура модулей
 
-Quiz content is stored in `data/questions.json` under a top-level `categories` object.
+### `index.js`
+Главный входной файл CLI-приложения.  
+Он:
 
-Available categories:
+- загружает вопросы из `data/questions.json`;
+- показывает приветственный баннер;
+- управляет выбором категории и количества вопросов;
+- создаёт экземпляр `Quiz`;
+- запускает цикл вопросов;
+- показывает результаты;
+- предлагает сыграть снова;
+- обрабатывает ошибки и закрывает `readline`-интерфейс.
 
-- `javascript` → JavaScript Basics
-- `nodejs` → Node.js Fundamentals
-- `general` → General Programming
+### `src/input.js`
+Модуль для работы с вводом пользователя.  
+Содержит `readline`-интерфейс и функции:
 
-Each question includes:
+- `prompt`
+- `select`
+- `confirm`
+- `pressEnter`
 
-- `question` — the question text
-- `options` — an array of possible answers
-- `answer` — the index of the correct option
-- `explanation` — the explanation shown after answering and in the review summary
+Используется для интерактивного общения с пользователем в терминале.
 
-## Scripts
+### `src/quiz.js`
+Основная логика викторины.  
+Содержит:
 
-From `package.json`:
+- перемешивание вопросов по алгоритму Fisher–Yates;
+- класс `Quiz` со состоянием викторины;
+- методы:
+  - `askQuestion`
+  - `renderProgressBar`
+  - `showResults`
 
-- `npm start` — runs `node index.js`
-- `npm test` — runs the Node.js test runner with `node --test`
+Также хранит:
 
-## Architecture Overview
+- текущий индекс вопроса;
+- счёт;
+- историю ответов.
 
-- `index.js` loads the quiz data, shows the banner, coordinates category and question-count selection, runs the quiz loop, and handles errors and cleanup.
-- `src/input.js` wraps Node.js `readline` with reusable prompt, selection, confirmation, and pause helpers.
-- `src/quiz.js` contains the `Quiz` class, shuffling logic, question rendering, scoring, progress tracking, and results output.
-- `src/colors.js` provides ANSI color helpers used throughout the CLI.
+Модуль выводит прогресс, правильность ответа, объяснение и итоговый отчёт.
 
-## Contributing
+### `src/colors.js`
+Вспомогательный модуль ANSI-цветов.  
+Экспортирует стили и функции:
 
-Contributions are welcome. If you'd like to improve the quiz, you can add more questions, expand category coverage, refine the terminal experience, or extend the test suite.
+- `red`, `green`, `yellow`, `blue`, `cyan`, `magenta`
+- `bold`, `dim`
+- `success`, `error`, `warning`, `info`, `highlight`
 
-Before opening a pull request, run the test script:
+Используется для красивого и читаемого вывода в терминале.
 
-```bash
-npm test
+### `data/questions.json`
+JSON-файл с данными викторины.  
+Содержит объект `categories` с категориями:
+
+- `javascript`
+- `nodejs`
+- `general`
+
+Каждая категория включает:
+
+- `name`
+- `questions`
+
+Каждый вопрос содержит:
+
+- `question`
+- `options`
+- `answer`
+- `explanation`
+
+## Формат данных викторины
+
+Пример структуры данных:
+
+```json
+{
+  "categories": {
+    "javascript": {
+      "name": "JavaScript",
+      "questions": [
+        {
+          "question": "Question text",
+          "options": ["A", "B", "C", "D"],
+          "answer": "B",
+          "explanation": "Why B is correct"
+        }
+      ]
+    }
+  }
+}
 ```
 
-## License
+## Поведение приложения
 
-MIT
+Во время работы приложение:
+
+1. показывает приветствие;
+2. предлагает выбрать категорию;
+3. предлагает выбрать количество вопросов;
+4. задаёт вопросы в случайном порядке;
+5. принимает ответ пользователя;
+6. показывает, верен ли ответ;
+7. отображает объяснение;
+8. выводит итоговый результат;
+9. предлагает начать заново.
+
+## Скрипты `package.json`
+
+- `npm start` — запуск приложения
+- `npm test` — запуск тестов
+
+## Лицензия
+
+Проект распространяется под лицензией **MIT**.
